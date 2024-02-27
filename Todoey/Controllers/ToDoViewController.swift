@@ -4,13 +4,15 @@ import CoreData
 class ToDoViewController: UITableViewController {
     
     var itemsArray = [TodoItem]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print(dataFilePath)
         
-//        loadItems()
+        loadItems()
 
         
         
@@ -42,7 +44,8 @@ class ToDoViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = itemsArray[indexPath.row]
-        
+//        managedObjectContext.delete(item)
+//        itemsArray.remove(at: indexPath.row)
         item.isDone = !item.isDone
         self.saveData()
         
@@ -55,6 +58,7 @@ class ToDoViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             //what will happen after user clicks on alert
+            //Create a NSManagedObject (Row) of the entity(Class) table
             let newItem = TodoItem(context: self.managedObjectContext)
             newItem.title = textField.text!
             newItem.isDone = false
@@ -75,10 +79,9 @@ class ToDoViewController: UITableViewController {
     }
     
     func saveData(){
-   
-        
         do{
             try managedObjectContext.save()
+            print("Succesfully saved data")
    
         }catch {
             print("Error saving context: \(error)")
@@ -86,17 +89,15 @@ class ToDoViewController: UITableViewController {
         tableView.reloadData()
     }
     
-//    func loadItems(){
-//        if let data = try? Data(contentsOf: dataFilePath!){
-//            let decoder = PropertyListDecoder()
-//            do{
-//                itemsArray = try decoder.decode([TodoItem].self, from: data)
-//            }catch {
-//                print("error decoding item array \(error)")
-//            }
-//        }
-//        
-//    }
+    func loadItems(){
+        //Fetch all the TodoItem entities(NSManagedObject Array) from the persistentContainer 
+        let request : NSFetchRequest<TodoItem> = TodoItem.fetchRequest()
+        do {
+            itemsArray = try managedObjectContext.fetch(request)
+        }catch{
+            print("Error fetching from context - CoreData: \(error)")
+        }
+    }
 }
 
 
