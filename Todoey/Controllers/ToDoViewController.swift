@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class ToDoViewController: UITableViewController {
+class ToDoViewController: UITableViewController{
     
     var itemsArray = [TodoItem]()
     
@@ -10,7 +10,6 @@ class ToDoViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        print(dataFilePath)
         
         loadItems()
 
@@ -22,7 +21,7 @@ class ToDoViewController: UITableViewController {
         // Do any additional setup after loading the view.
     }
     
-    //MARK -  Table view datasource methods
+    //MARK: -  Table view datasource methods
     //Create number of rows in table section using numberOfRowsInSection init
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemsArray.count
@@ -41,6 +40,8 @@ class ToDoViewController: UITableViewController {
         
         return cell
     }
+    
+    //MARK: - TableView Delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = itemsArray[indexPath.row]
@@ -78,6 +79,7 @@ class ToDoViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    //MARK: - CoreData Handle saving and loading
     func saveData(){
         do{
             try managedObjectContext.save()
@@ -89,13 +91,37 @@ class ToDoViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadItems(){
-        //Fetch all the TodoItem entities(NSManagedObject Array) from the persistentContainer 
-        let request : NSFetchRequest<TodoItem> = TodoItem.fetchRequest()
+    //Fetch all the TodoItem entities(NSManagedObject Array) from the persistentContainer
+    func loadItems(with request: NSFetchRequest<TodoItem> = TodoItem.fetchRequest()){
         do {
             itemsArray = try managedObjectContext.fetch(request)
         }catch{
             print("Error fetching from context - CoreData: \(error)")
+        }
+        tableView.reloadData()
+    }
+}
+
+//MARK: - Search Bar Extension
+
+extension ToDoViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request : NSFetchRequest<TodoItem> = TodoItem.fetchRequest()
+        //Make A query Filter request using NSPredicate and add it to request
+        request.predicate  = NSPredicate(format: "title CONTAINS[cd] %@",searchBar.text!)
+        //Sorting
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        loadItems(with: request)
+
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
         }
     }
 }
