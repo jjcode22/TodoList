@@ -36,7 +36,7 @@ class CategoryViewController: UITableViewController {
             print("successfully added \(textField.text!)")
         }
         alert.addTextField { (alertField) in
-            alertField.placeholder = "Create New Category"
+            alertField.placeholder = "Enter Category Name"
             textField = alertField
         }
         alert.addAction(action)
