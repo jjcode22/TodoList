@@ -9,16 +9,9 @@ class ToDoViewController: UITableViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         
         loadItems()
-
-        
-        
-//        if let items = defaults.array(forKey: "ToDoListArray") as? [TodoItem]{
-//            itemsArray = items
-//        }
-        // Do any additional setup after loading the view.
     }
     
     //MARK: -  Table view datasource methods
