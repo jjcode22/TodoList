@@ -29,9 +29,9 @@ class CategoryViewController: UITableViewController {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
-            let newItem = Category(context: self.context)
-            newItem.name = textField.text!
-            self.categoryItemsArray.append(newItem)
+            let newCategory = Category(context: self.context)
+            newCategory.name = textField.text!
+            self.categoryItemsArray.append(newCategory)
             self.saveData()
             print("successfully added \(textField.text!)")
         }
@@ -61,8 +61,14 @@ class CategoryViewController: UITableViewController {
     //MARK: - TableView Delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ToDoViewController
         
-        
+        if let indexPath = tableView.indexPathForSelectedRow{
+            destinationVC.selectedCategory = categoryItemsArray[indexPath.row]
+        }
     }
     
     
