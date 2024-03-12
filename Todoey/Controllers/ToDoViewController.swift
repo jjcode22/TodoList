@@ -1,7 +1,8 @@
 import UIKit
 import RealmSwift
 
-class ToDoViewController: UITableViewController{
+
+class ToDoViewController: SwipeTableViewController{
     
     var todoItems: Results<Item>?
     let realm = try! Realm()
@@ -16,6 +17,7 @@ class ToDoViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
 //        let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        tableView.rowHeight = 70.0
 
     }
     
@@ -30,7 +32,7 @@ class ToDoViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("cellForRowAt called")
         //create cell using dequeueReusablecell method using identiefer of prototype cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ReusableTableCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         //index path is the current index the table is on, indexPath.row is the row of the table
         if let item = todoItems?[indexPath.row]{
             cell.textLabel?.text = item.title
@@ -106,7 +108,23 @@ class ToDoViewController: UITableViewController{
         todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
         tableView.reloadData()
     }
+    //MARK: - Delete data from Swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+                    if let item = self.todoItems?[indexPath.row]{
+                        do{
+                            try self.realm.write{
+                                self.realm.delete(item)
+        
+                            }
+                        }catch{
+                            print("Error deleting todoItem: \(error)")
+                        }
+                    }
+    }
 }
+
+ 
 
 //MARK: - Search Bar Extension
 
