@@ -54,7 +54,7 @@
             </objects>
             <point key="canvasLocation" x="3206" y="11"/>
         </scene>
-        <!--Todoey✓-->
+        <!--Todoey✓ categories-->
         <scene sceneID="B0n-dr-ENE">
             <objects>
                 <tableViewController id="fib-Eh-TdK" customClass="CategoryViewController" customModule="Todoey" customModuleProvider="target" sceneMemberID="viewController">
@@ -77,7 +77,7 @@
                             <outlet property="delegate" destination="fib-Eh-TdK" id="4pv-Qt-Ck9"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Todoey✓" id="DgS-O8-5hP">
+                    <navigationItem key="navigationItem" title="Todoey✓ categories" id="DgS-O8-5hP">
                         <barButtonItem key="rightBarButtonItem" image="plus" catalog="system" id="3nV-8a-VFr">
                             <connections>
                                 <action selector="addButtonPressed:" destination="fib-Eh-TdK" id="TdI-yZ-Tw6"/>
@@ -97,8 +97,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LnC-nc-boO" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0dn-UA-Ezl">
-                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="0dn-UA-Ezl">
+                        <rect key="frame" x="0.0" y="48" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" systemColor="systemIndigoColor"/>
                         <textAttributes key="titleTextAttributes">
@@ -109,17 +109,12 @@
                             <color key="textShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                         <navigationBarAppearance key="standardAppearance">
-                            <textAttributes key="titleTextAttributes">
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </textAttributes>
-                        </navigationBarAppearance>
-                        <navigationBarAppearance key="scrollEdgeAppearance">
                             <color key="backgroundColor" systemColor="systemIndigoColor"/>
                             <textAttributes key="titleTextAttributes">
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </textAttributes>
                         </navigationBarAppearance>
+                        <navigationBarAppearance key="scrollEdgeAppearance"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
